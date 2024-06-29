@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Plans{% endblock %}
+
+{% block content %}
+<h1>Available Plans</h1>
+<ul>
+    {% for plan in plans %}
+    <li>{{ plan.name }} - {{ plan.price }} KES</li>
+    {% endfor %}
+</ul>
+{% endblock %}

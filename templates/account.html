@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+<h1>Account Details</h1>
+<p><strong>Username:</strong> {{ user[0] }}</p>
+<p><strong>Email:</strong> {{ user[1] }}</p>
+<p><strong>Phone:</strong> {{ user[2] }}</p>
+
+<h2>Current Plan</h2>
+<p><strong>Plan Name:</strong> {{ current_plan.name }}</p>
+<p><strong>Price:</strong> {{ current_plan.price }} KES</p>
+
+<a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to the Hotspot Billing System</h1>
+{% if 'user_id' in session %}
+<p>Select a plan</p>
+{% else %}
+<p>Please login or register to access our services.</p>
+{% endif %}
+
+<h2>Featured Plans</h2>
+<div class="cards">
+    {% for plan in plans %}
+    <div class="card">
+        <h2>{{ plan.name }}</h2>
+        <p>{{ plan.price }} KES</p>
+        <button type="button" class="btn btn-primary open-modal" data-target="#purchaseModal-{{ plan.id }}">
+            Get
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal" id="purchaseModal-{{ plan.id }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm Purchase</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please confirm your phone number:</p>
+                        <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="Enter your phone number">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="cancel btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <!-- Add margin between buttons -->
+                        <span style="margin-right: 10px;"></span>
+                        <form action="{{ url_for('buy_plan', plan_id=plan.id, amount=plan.price) }}" method="POST">
+                            <input type="hidden" name="plan_name" value="{{ plan.name }}">
+                            <input type="hidden" name="phone_number" id="phone_number_modal" value="">
+                            <button type="submit" class="btn btn-primary">Pay</button>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- Overlay for modal -->
+        <div class="modal-overlay"></div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // Show modal and overlay on button click
+    $('.open-modal').on('click', function() {
+        var modalId = $(this).attr('data-target');
+        $(modalId).show();
+        $('.modal-overlay').addClass('active');
+    });
+    
+    // Close modal and overlay on close button click or outside click
+    $('.close, .modal-overlay, .cancel').on('click', function() {
+        $('.modal').hide();
+        $('.modal-overlay').removeClass('active');
+    });
+    
+    // Update phone number input in modal form before submitting
+    $('.btn-primary').on('click', function() {
+        var phoneNumber = $('#phone_number').val();
+        $('#phone_number_modal').val(phoneNumber);
+    });
+</script>
+
+{% endblock %}
