@@ -20,6 +20,7 @@ config.ini
 secrets.txt
 
 # venv
+myenv/*
 venv/*
 venv/
 ```
